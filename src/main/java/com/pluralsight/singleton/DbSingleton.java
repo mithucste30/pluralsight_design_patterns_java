@@ -1,0 +1,49 @@
+package com.pluralsight.singleton;
+
+import org.apache.derby.jdbc.EmbeddedDriver;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DbSingleton {
+    private static DbSingleton instance = null;
+    private Connection connection = null;
+
+
+    private DbSingleton(){
+        try {
+            DriverManager.registerDriver(new EmbeddedDriver());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static DbSingleton getInstance(){
+        if(instance == null){
+            synchronized (DbSingleton.class){
+                if(instance == null){
+                    instance = new DbSingleton();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public Connection getConnection(){
+        if (connection == null){
+            synchronized (DbSingleton.class){
+                if (connection == null){
+                    try {
+                        String dbUrl = "jdbc:derby:memory:codejava/webapp;create=true";
+                        connection = DriverManager.getConnection(dbUrl);
+                    }catch (SQLException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        return connection;
+    }
+}
