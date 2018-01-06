@@ -20,7 +20,7 @@ public class DbSingletonDemo {
             sqlStatement = connection.createStatement();
             int count = sqlStatement.executeUpdate("CREATE TABLE Address (ID INT, StreetName VARCHAR(20), City VARCHAR(20))");
             System.out.println("Table created.");
-            sqlStatement.close(); 
+            sqlStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
